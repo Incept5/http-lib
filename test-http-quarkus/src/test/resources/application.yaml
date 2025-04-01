@@ -1,0 +1,8 @@
+
+# Example of how to use the WireMock DevServices to mock an external HTTP service
+example:
+  http:
+    base-url: http://localhost:${quarkus.wiremock.devservices.port}
+    token-endpoint: http://localhost:${quarkus.wiremock.devservices.port}/token
+    client-id: test-client
+    client-secret: test-secret

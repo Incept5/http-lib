@@ -1,0 +1,13 @@
+{
+    "request": {
+        "method": "POST",
+        "url": "/token"
+    },
+    "response": {
+        "status": 200,
+        "body": "{\"access_token\":\"example-token\"}",
+        "headers": {
+            "Content-Type": "application/json"
+        }
+    }
+}

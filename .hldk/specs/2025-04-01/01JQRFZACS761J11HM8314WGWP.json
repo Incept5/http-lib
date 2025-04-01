@@ -1,0 +1,24 @@
+{
+  "spec": "Fix the build scripts so that the java and kotlin tasks reolve",
+  "commitMessage": "Initial commit: Add http-core library and related test projects",
+  "stats": {
+    "inputTokens": 213354,
+    "cacheWriteTokens": 7273,
+    "cacheReadTokens": 174552,
+    "outputTokens": 4047,
+    "totalTokens": null,
+    "cost": 0.52557525,
+    "currency": "gbp",
+    "processingMillis": 128328,
+    "git": {
+      "filesChanged": 65,
+      "insertions": 3441,
+      "deletions": 0,
+      "linesChanged": 3441,
+      "testFilesChanged": 23,
+      "testInsertions": 1152,
+      "testDeletions": 0,
+      "testLinesChanged": 1152
+    }
+  }
+}

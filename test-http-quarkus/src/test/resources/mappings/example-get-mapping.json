@@ -1,0 +1,13 @@
+{
+    "request": {
+        "method": "GET",
+        "url": "/something/08cb06af-bbbf-42c1-af48-5411b1deb388"
+    },
+    "response": {
+        "status": 200,
+        "body": "{\"id\":\"08cb06af-bbbf-42c1-af48-5411b1deb388\",\"name\":\"Joe Bloggs\",\"age\":23}",
+        "headers": {
+            "Content-Type": "application/json"
+        }
+    }
+}
