@@ -1,7 +1,5 @@
 package org.incept5.http.interceptors
 
-import org.incept5.telemetry.log.LogEvent
-import org.incept5.telemetry.log.VSLogger
 import okhttp3.Interceptor
 import okhttp3.Response
 import org.slf4j.LoggerFactory
@@ -20,7 +18,7 @@ class RetryInterceptor(
 ) : Interceptor {
 
     companion object {
-        private val logger = VSLogger(RetryInterceptor::class.java)
+        private val logger = LoggerFactory.getLogger(RetryInterceptor::class.java)
     }
 
     /**
@@ -32,11 +30,12 @@ class RetryInterceptor(
         var retryCount = 0
         while (retryPolicy.shouldRetry(response) && retryCount < maxRetries) {
             retryCount++
-            logger.info ( "Retrying HTTP request : {}", LogEvent (
-                "url" to request.url,
-                "responseCode" to response.code,
-                "retryCount" to retryCount,
-                "maxRetries" to maxRetries)
+            logger.info ( """Retrying HTTP request :
+                url ${request.url},
+                responseCode ${response.code},
+                retryCount ${retryCount},
+                maxRetries  $maxRetries
+                """
             )
             Thread.sleep(pauseBetweenRetriesMs)
             request = request.newBuilder().build()

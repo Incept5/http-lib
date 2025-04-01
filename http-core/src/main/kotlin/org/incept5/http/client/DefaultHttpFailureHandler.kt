@@ -2,7 +2,6 @@ package org.incept5.http.client
 
 import org.incept5.error.ErrorCategory
 import org.incept5.http.error.HttpRequestFailedException
-import org.incept5.telemetry.log.LogEvent
 import okhttp3.Response
 import org.slf4j.LoggerFactory
 
@@ -18,7 +17,7 @@ class DefaultHttpFailureHandler : HttpFailureHandler {
 
     override fun handleFailedResponse(response: Response) {
         if ( !response.isSuccessful ) {
-            logger.warn ( "HTTP call failed : {}", LogEvent("httpStatusCode" to response.code, "body" to response.body?.string()) )
+            logger.warn ( "HTTP call failed : httpStatusCode ${response.code}, body ${response.body?.string()}")
             val category = when (response.code) {
                 401 -> ErrorCategory.AUTHENTICATION
                 403 -> ErrorCategory.AUTHORIZATION

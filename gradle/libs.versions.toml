@@ -37,7 +37,7 @@ incept5-correlation = { module = "com.github.incept5:correlation", version.ref =
 incept5-error-core = { module = "com.github.incept5.error-lib:error-core", version.ref = "incept5-error" }
 
 # json
-incept5-json-core = { module = "com.github.incept5:json-core", version.ref = "incept5-json" }
+incept5-json-core = { module = "com.github.incept5:json-lib", version.ref = "incept5-json" }
 
 
 # jakarta

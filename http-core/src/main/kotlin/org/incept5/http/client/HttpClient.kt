@@ -6,8 +6,6 @@ import org.incept5.http.interceptors.CorrelationIdInterceptor
 import org.incept5.http.interceptors.JsonLoggingInterceptor
 import org.incept5.http.interceptors.RetryInterceptor
 import org.incept5.json.Json
-import org.incept5.telemetry.log.LogEvent
-import org.incept5.telemetry.log.VSLogger
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -35,14 +33,14 @@ open class HttpClient (
 
     companion object {
         val MEDIA_TYPE_JSON = "application/json"
-        private val log = VSLogger(HttpClient::class.java)
+        private val log = LoggerFactory.getLogger(HttpClient::class.java)
     }
 
     // make the underlying client available in case it's needed
     var okHttpClient: OkHttpClient = buildClient(clientBuilder)
 
     private fun buildClient(clientBuilder: OkHttpClient.Builder): OkHttpClient {
-        log.trace ( "Building http client : {}", LogEvent("baseUri" to baseUri) )
+        log.trace ( "Building http client : baseUri $baseUri")
         addStandardInterceptors(clientBuilder)
         return clientBuilder.build()
     }
@@ -52,7 +50,7 @@ open class HttpClient (
         // add any custom interceptors
         if ( interceptors.isNotEmpty() ){
             interceptors.forEach {
-                log.trace( "Adding custom interceptor : {}", LogEvent("cls" to it.javaClass.name ))
+                log.trace( "Adding custom interceptor : cls ${it.javaClass.name}")
                 clientBuilder.addInterceptor(it)
             }
         }
