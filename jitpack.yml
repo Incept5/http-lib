@@ -14,6 +14,7 @@ install:
       echo "Using commit hash as version: $VERSION";
     fi
   - echo "Building version $VERSION"
-  - ./gradlew build publishToMavenLocal -Pgroup=com.github.incept5 -Pversion=$VERSION
+  - ./gradlew build publishToMavenLocal -Pversion=$VERSION
   - echo "Published artifacts to local Maven repository"
-  - find ~/.m2/repository -name "http-lib*" | grep "com/github/incept5" | sort
+  - find ~/.m2/repository -name "json-lib*" | grep "com/github/incept5" | sort
+  - echo "Artifacts should be available at: https://jitpack.io/com/github/incept5/http-lib/$VERSION/"
