@@ -57,7 +57,7 @@ jobs:
             
             # Verify local artifacts
             echo "Verifying local artifacts:"
-            find ~/.m2/repository -name "http-lib*" | grep "org/incept5" | sort
+            find ~/.m2/repository -name "http-lib*" | grep "com/github/incept5" | sort
             
             # Trigger JitPack build by making a request to the JitPack URL with the version tag
             echo "Triggering JitPack build for version ${VERSION}"
