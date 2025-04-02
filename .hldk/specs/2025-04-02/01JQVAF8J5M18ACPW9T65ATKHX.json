@@ -1,0 +1,24 @@
+{
+  "spec": "fix the compile error on line 97 in build.gradle.kts",
+  "commitMessage": "Fix compile error in build.gradle.kts by removing duplicate dependencies block and fixing Kotlin version reference",
+  "stats": {
+    "inputTokens": 31495,
+    "cacheWriteTokens": 7270,
+    "cacheReadTokens": 43620,
+    "outputTokens": 1971,
+    "totalTokens": null,
+    "cost": 0.09303750000000001,
+    "currency": "gbp",
+    "processingMillis": 46194,
+    "git": {
+      "filesChanged": 1,
+      "insertions": 71,
+      "deletions": 13,
+      "linesChanged": 71,
+      "testFilesChanged": 0,
+      "testInsertions": 0,
+      "testDeletions": 0,
+      "testLinesChanged": 0
+    }
+  }
+}

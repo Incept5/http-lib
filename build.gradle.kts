@@ -1,13 +1,41 @@
+// For local builds, use 0-SNAPSHOT. For CI builds, use the build number from CircleCI
+// If a specific version is provided (e.g., from JitPack), use that instead
+val providedVersion = findProperty("version") as? String
+val buildNumber = findProperty("buildNumber") as? String
+
+// Set version based on parameters
+if (buildNumber != null && buildNumber.isNotEmpty()) {
+    // If buildNumber is provided, use it
+    version = "1.0.$buildNumber"
+    println("Using build number for version: $version")
+} else if (providedVersion != null && providedVersion != "unspecified" && providedVersion.isNotEmpty()) {
+    // If explicit version is provided, use it
+    version = providedVersion
+    println("Using provided version: $version")
+} else {
+    // Default version
+    version = "1.0.0-SNAPSHOT"
+    println("Using default version: $version")
+}
+
+// Always ensure we have a valid group ID
+val providedGroup = findProperty("group") as? String
+group = if (providedGroup.isNullOrBlank()) "com.github.incept5" else providedGroup
+
+// Log the group and version for debugging
+println("Building with group: $group")
+println("Building with version: $version")
+
 plugins {
+    // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
     alias(libs.plugins.kotlin.jvm)
 
     // Apply the java-library plugin for API and implementation separation.
     `java-library`
 
-    // publish jars to nexus
+    // publish to maven repositories
     `maven-publish`
 }
-
 dependencies {
     api(libs.slf4j.api)
 
@@ -19,10 +47,12 @@ dependencies {
     // jakarta
     implementation(platform(libs.jakarta.bom))
 
-
     // jackson
     implementation(platform(libs.jackson.bom))
     api("com.fasterxml.jackson.core:jackson-databind")
+    api("com.fasterxml.jackson.module:jackson-module-kotlin:2.16.1")
+    api("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.16.1")
+    api("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.16.1")
 
     // okhttp
     api(libs.okhttp3.core)
@@ -36,6 +66,8 @@ dependencies {
     testImplementation(libs.mockk.jvm)
     testImplementation(libs.mockk.dsl)
     testRuntimeOnly("io.kotest:kotest-runner-junit5-jvm")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.10.1")
 
     // needed for testing XML redaction
     testImplementation("jakarta.xml.bind:jakarta.xml.bind-api")
@@ -47,17 +79,33 @@ dependencies {
     testRuntimeOnly("ch.qos.logback:logback-classic:1.4.14")
 }
 
-tasks.test {
-    useJUnitPlatform()
+testing {
+    suites {
+        // Configure the built-in test suite
+        val test by getting(JvmTestSuite::class) {
+            // Use Kotlin Test test framework
+            useKotlinTest("1.9.22") // Using a fixed version instead of trying to access from libs
+        }
+    }
 }
 
-// Sources jar is already configured by the java plugin in the root project
-// No need to register a separate sourcesJar task
+// Apply a specific Java toolchain to ease working on different environments.
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+    withJavadocJar()
+    withSourcesJar()
+}
 
-// Jenkins builds will inject the build number into the build, otherwise we default to 0-SNAPSHOT
-val buildNumber = findProperty("buildNumber") as? String ?: "0-SNAPSHOT"
-group = "org.incept5"
-version = "1.0.$buildNumber"
+// Configure Kotlin to target JVM 21
+kotlin {
+    jvmToolchain(21)
+
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
+    }
+}
 
 publishing {
     publications {
@@ -71,8 +119,8 @@ publishing {
 
             // POM information is automatically included with sources and javadoc
             pom {
-                name.set("Http Library")
-                description.set("A library for Http client communication with external rest APIs")
+                name.set("JSON Library")
+                description.set("A library for connecting to REST services")
                 url.set("https://github.com/incept5/http-lib")
 
                 licenses {
@@ -97,4 +145,14 @@ publishing {
     repositories {
         mavenLocal()
     }
+}
+
+// For JitPack compatibility
+tasks.register("install") {
+    dependsOn(tasks.named("publishToMavenLocal"))
+}
+
+// Always publish to local Maven repository after build for local development
+tasks.named("build") {
+    finalizedBy(tasks.named("publishToMavenLocal"))
 }
