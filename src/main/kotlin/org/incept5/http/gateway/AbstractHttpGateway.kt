@@ -8,7 +8,6 @@ import org.incept5.http.interceptors.JsonLoggingInterceptor
 import org.incept5.http.interceptors.RetryInterceptor
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 
 /**
  * Deprecated: Use HttpClient instead

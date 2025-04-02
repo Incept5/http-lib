@@ -61,21 +61,21 @@ jobs:
             
             # Trigger JitPack build by making a request to the JitPack URL with the version tag
             echo "Triggering JitPack build for version ${VERSION}"
-            curl -s "https://jitpack.io/com/github/incept5/http-core/${VERSION}/http-core-${VERSION}.pom" || true
+            curl -s "https://jitpack.io/com/github/incept5/http-lib/${VERSION}/http-lib-${VERSION}.pom" || true
             
             echo "JitPack build triggered for version ${VERSION}"
-            echo "Artifacts will be available at: https://jitpack.io/#com.github.incept5/http-core/${VERSION}"
+            echo "Artifacts will be available at: https://jitpack.io/#com.github.incept5/http-lib/${VERSION}"
             
             # Wait for JitPack to process the build (optional)
             echo "Waiting for JitPack to process the build..."
             sleep 60
             
             # Verify the build status
-            HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "https://jitpack.io/com/github/incept5/http-core/${VERSION}/http-core-${VERSION}.pom")
+            HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "https://jitpack.io/com/github/incept5/http-lib/${VERSION}/http-lib-${VERSION}.pom")
             if [ "$HTTP_STATUS" -eq 200 ]; then
               echo "JitPack build successful!"
             else
-              echo "JitPack build may still be in progress. Check status at: https://jitpack.io/com/github/incept5/http-core/${VERSION}"
+              echo "JitPack build may still be in progress. Check status at: https://jitpack.io/com/github/incept5/http-lib/${VERSION}"
             fi
 
 workflows:
@@ -89,4 +89,3 @@ workflows:
           filters:
             branches:
               only: main
-              

@@ -2,10 +2,6 @@ package org.incept5.http.interceptors.redaction
 
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
-import io.mockk.mockk
-import okhttp3.mockwebserver.MockWebServer
-import org.slf4j.Logger
-import java.util.*
 
 class TestXmlRedactor : ShouldSpec({
 

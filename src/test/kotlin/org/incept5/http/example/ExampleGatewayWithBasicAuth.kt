@@ -2,7 +2,6 @@ package org.incept5.http.example
 
 import org.incept5.http.auth.BasicAuthenticationInterceptor
 import org.incept5.http.client.HttpClient
-import okhttp3.Interceptor
 import java.util.*
 
 /**

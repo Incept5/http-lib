@@ -1,15 +1,10 @@
 package org.incept5.http.example
 
-import com.github.tomakehurst.wiremock.client.WireMock
 import org.incept5.http.client.HttpClient
 import org.incept5.http.interceptors.RetryInterceptor
-import io.quarkiverse.wiremock.devservice.ConnectWireMock
 import io.quarkus.test.junit.QuarkusTest
-import io.quarkus.test.junit.TestProfile
-import jakarta.inject.Inject
 import org.eclipse.microprofile.config.inject.ConfigProperty
 import org.junit.jupiter.api.Test
-import java.util.UUID
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 

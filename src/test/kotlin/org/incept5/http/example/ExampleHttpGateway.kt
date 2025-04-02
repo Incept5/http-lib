@@ -3,11 +3,7 @@ package org.incept5.http.example
 import org.incept5.http.client.HttpClient
 import org.incept5.http.interceptors.JsonLoggingInterceptor
 import org.incept5.http.interceptors.redaction.RedactConfig
-import org.incept5.json.Json
-import jakarta.xml.bind.JAXB
 import okhttp3.Request
-import okhttp3.RequestBody.Companion.toRequestBody
-import java.io.StringWriter
 import java.util.*
 
 /**

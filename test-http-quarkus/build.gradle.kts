@@ -6,7 +6,7 @@ plugins {
 
 dependencies {
 
-    api(project(":http-core"))
+    api(project(":"))
     api("io.quarkus:quarkus-core")
     api("io.smallrye.config:smallrye-config-core")
     api("jakarta.inject:jakarta.inject-api")

@@ -1,5 +1,4 @@
 rootProject.name = "http-lib"
-include("http-core")
 include("test-http-quarkus")
 
 pluginManagement {
