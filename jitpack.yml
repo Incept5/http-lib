@@ -16,5 +16,5 @@ install:
   - echo "Building version $VERSION"
   - ./gradlew build publishToMavenLocal -Pversion=$VERSION
   - echo "Published artifacts to local Maven repository"
-  - find ~/.m2/repository -name "http-lib*" | grep "org/incept5" | sort
+  - find ~/.m2/repository -name "http-lib*" | grep "com/github/incept5" | sort
   - echo "Artifacts should be available at: https://jitpack.io/com/github/incept5/http-lib/$VERSION/"
