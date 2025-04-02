@@ -57,14 +57,14 @@ jobs:
             
             # Verify local artifacts
             echo "Verifying local artifacts:"
-            find ~/.m2/repository -name "http-lib*" | grep "com/github/incept5" | sort
+            find ~/.m2/repository -name "http-lib*" | grep "org/incept5" | sort
             
             # Trigger JitPack build by making a request to the JitPack URL with the version tag
             echo "Triggering JitPack build for version ${VERSION}"
             curl -s "https://jitpack.io/com/github/incept5/http-lib/${VERSION}/http-lib-${VERSION}.pom" || true
             
             echo "JitPack build triggered for version ${VERSION}"
-            echo "Artifacts will be available at: https://jitpack.io/#com.github.incept5/http-lib/${VERSION}"
+            echo "Artifacts will be available at: https://jitpack.io/com/github/incept5/http-lib/${VERSION}"
             
             # Wait for JitPack to process the build (optional)
             echo "Waiting for JitPack to process the build..."
@@ -76,6 +76,8 @@ jobs:
               echo "JitPack build successful!"
             else
               echo "JitPack build may still be in progress. Check status at: https://jitpack.io/com/github/incept5/http-lib/${VERSION}"
+              # Don't fail the build if JitPack is still processing
+              exit 0
             fi
 
 workflows:

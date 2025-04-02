@@ -1,0 +1,24 @@
+{
+  "spec": "The publish to Jitpack task in the pipeline is failing\nThe logs show this:\nVerifying local artifacts:\n\nExited with code exit status 1",
+  "commitMessage": "Fix JitPack publishing configuration to use correct artifact name and group ID",
+  "stats": {
+    "inputTokens": 54964,
+    "cacheWriteTokens": 0,
+    "cacheReadTokens": 94510,
+    "outputTokens": 2201,
+    "totalTokens": null,
+    "cost": 0.14843025,
+    "currency": "gbp",
+    "processingMillis": 54729,
+    "git": {
+      "filesChanged": 2,
+      "insertions": 5,
+      "deletions": 3,
+      "linesChanged": 5,
+      "testFilesChanged": 0,
+      "testInsertions": 0,
+      "testDeletions": 0,
+      "testLinesChanged": 0
+    }
+  }
+}
