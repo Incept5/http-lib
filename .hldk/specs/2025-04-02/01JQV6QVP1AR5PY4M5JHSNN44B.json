@@ -1,0 +1,24 @@
+{
+  "spec": "add details on how to use the lib in gradle and maven projects to the README",
+  "commitMessage": "Add installation instructions for Gradle and Maven to README",
+  "stats": {
+    "inputTokens": 23389,
+    "cacheWriteTokens": 7270,
+    "cacheReadTokens": 36350,
+    "outputTokens": 886,
+    "totalTokens": null,
+    "cost": 0.06259275,
+    "currency": "gbp",
+    "processingMillis": 34371,
+    "git": {
+      "filesChanged": 1,
+      "insertions": 63,
+      "deletions": 0,
+      "linesChanged": 63,
+      "testFilesChanged": 0,
+      "testInsertions": 0,
+      "testDeletions": 0,
+      "testLinesChanged": 0
+    }
+  }
+}

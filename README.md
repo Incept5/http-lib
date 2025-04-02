@@ -2,6 +2,69 @@
 
 Base classes for implementing http gateway services
 
+## Installation
+
+### Gradle (Kotlin DSL)
+
+Add the JitPack repository to your build file:
+
+```kotlin
+repositories {
+    mavenCentral()
+    maven { url = uri("https://jitpack.io") }
+}
+```
+
+Add the dependency:
+
+```kotlin
+dependencies {
+    implementation("com.github.incept5:http-lib:1.0.0") // Replace with the latest version
+}
+```
+
+### Gradle (Groovy DSL)
+
+Add the JitPack repository to your build file:
+
+```groovy
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
+```
+
+Add the dependency:
+
+```groovy
+dependencies {
+    implementation 'com.github.incept5:http-lib:1.0.0' // Replace with the latest version
+}
+```
+
+### Maven
+
+Add the JitPack repository to your pom.xml:
+
+```xml
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+```
+
+Add the dependency:
+
+```xml
+<dependency>
+    <groupId>com.github.incept5</groupId>
+    <artifactId>http-lib</artifactId>
+    <version>1.0.0</version> <!-- Replace with the latest version -->
+</dependency>
+```
+
 ## Usage
 
 ### Basic Gateway functionality
