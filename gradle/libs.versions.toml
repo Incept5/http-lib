@@ -66,6 +66,8 @@ mockwebserver = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "
 
 # quarkus
 quarkus-bom = { module = "io.quarkus:quarkus-bom", version.ref = "quarkus" }
+quarkus-rest-jackson = {module = "io.quarkus:quarkus-rest-jackson", version.ref = "quarkus" }
+
 
 # quarkus wiremock
 quarkus-wiremock = { module = "io.quarkiverse.wiremock:quarkus-wiremock", version.ref = "quarkus-wiremock" }

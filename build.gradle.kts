@@ -42,17 +42,17 @@ dependencies {
     // Incept5 libraries
     implementation(libs.incept5.correlation)
     implementation(libs.incept5.json.core)
-    api(libs.incept5.error.core)
+    implementation(libs.incept5.error.core)
 
     // jakarta
     implementation(platform(libs.jakarta.bom))
 
     // jackson
     implementation(platform(libs.jackson.bom))
-    api("com.fasterxml.jackson.core:jackson-databind")
-    api("com.fasterxml.jackson.module:jackson-module-kotlin:2.16.1")
-    api("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.16.1")
-    api("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.16.1")
+    implementation("com.fasterxml.jackson.core:jackson-databind")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.16.1")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.16.1")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.16.1")
 
     // okhttp
     api(libs.okhttp3.core)

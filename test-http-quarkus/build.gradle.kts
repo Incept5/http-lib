@@ -19,8 +19,8 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind")
 
     runtimeOnly(libs.kotlin.logging)
+    runtimeOnly(libs.quarkus.rest.jackson)
     runtimeOnly("io.quarkus:quarkus-arc")
-    runtimeOnly("io.quarkus:quarkus-resteasy-reactive")
     runtimeOnly("io.quarkus:quarkus-jdbc-h2")
     runtimeOnly("io.quarkus:quarkus-config-yaml")
     runtimeOnly("io.quarkus:quarkus-flyway")
