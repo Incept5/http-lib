@@ -191,12 +191,76 @@ You can configure an alternate failure handler via the constructor of HttpClient
 
 ### Retries
 
-One of the standard interceptors is the RetryInterceptor that will retry the request on 409 or 5XX upto 3 times.
-You can customize the retry interceptor by providing a custom implementation of RetryInterceptor or by providing a different policy:
+The library includes a built-in retry mechanism through the `RetryInterceptor` that automatically handles transient failures in HTTP requests. By default, this interceptor will:
 
+- Retry requests that return HTTP 409 (Conflict) or any 5XX (Server Error) status codes
+- Perform up to 3 retry attempts
+- Wait 500ms between retry attempts
 
-    class ExampleGatewayWithRetries (baseUri: String) : HttpClient(baseUri, retryInterceptor = RetryInterceptor(maxRetries = 5, retryPolicy=MyCustomRetryPolicy()) {
+#### Basic Usage
+
+The `RetryInterceptor` is automatically included with the default `HttpClient` configuration, so you don't need to do anything special to enable basic retry functionality.
+
+#### Customizing Retry Behavior
+
+You can customize the retry behavior by providing your own `RetryInterceptor` instance when creating your gateway:
+
+```kotlin
+class ExampleGatewayWithRetries(baseUri: String) : HttpClient(
+    baseUri = baseUri,
+    retryInterceptor = RetryInterceptor(
+        maxRetries = 5,                     // Increase max retries to 5
+        pauseBetweenRetriesMs = 1000,       // Wait 1 second between retries
+        retryPolicy = MyCustomRetryPolicy() // Use custom retry logic
+    )
+) {
+    // Gateway methods
+}
+```
+
+#### Custom Retry Policies
+
+You can implement your own retry policy by implementing the `RetryPolicy` interface:
+
+```kotlin
+class MyCustomRetryPolicy : RetryPolicy {
+    override fun shouldRetry(response: Response): Boolean {
+        // Custom logic to determine if a retry should be attempted
+        // For example, retry on 429 (Too Many Requests) in addition to default cases
+        return response.code == 409 || response.code == 429 || response.code in 500..599
     }
+}
+```
+
+#### Retry Logging
+
+The `RetryInterceptor` logs retry attempts at the INFO level. Each retry will log:
+- The URL being retried
+- The response code that triggered the retry
+- The current retry count
+- The maximum number of retries configured
+
+#### When to Use Custom Retry Configuration
+
+Consider customizing the retry configuration when:
+
+1. **Working with rate-limited APIs**: Increase pause time between retries and add 429 status code handling
+2. **Critical operations**: Increase the number of retry attempts for important operations
+3. **Specific error handling**: Create custom policies to handle specific API response patterns
+4. **Performance optimization**: Adjust pause times based on operation importance and expected recovery time
+
+#### Disabling Retries
+
+If you need to disable the retry mechanism for a specific gateway, you can pass `null` for the `retryInterceptor` parameter:
+
+```kotlin
+class GatewayWithoutRetries(baseUri: String) : HttpClient(
+    baseUri = baseUri,
+    retryInterceptor = null
+) {
+    // Gateway methods
+}
+```
     
 ### Logging
 
