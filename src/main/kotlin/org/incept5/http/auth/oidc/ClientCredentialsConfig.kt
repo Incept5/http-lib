@@ -11,4 +11,11 @@ interface ClientCredentialsConfig {
 
     fun clientSecret(): String
 
+    /**
+     * Optional space-separated list of scopes to request
+     * e.g. "payment:create payment:read webhook:read"
+     * @return space-separated scope string, or null if no scopes requested
+     */
+    fun scope(): String?
+
 }

@@ -20,7 +20,13 @@ class ClientCredentialsTokenFetcher (val config: ClientCredentialsConfig): AuthT
 
     override fun fetchNewToken(): TokenResponse {
         val token = encoder.encode("${config.clientId()}:${config.clientSecret()}".toByteArray()).toString(Charsets.UTF_8)
-        val body = "grant_type=client_credentials".toRequestBody(null)
+        val bodyString = buildString {
+            append("grant_type=client_credentials")
+            config.scope()?.let { scope ->
+                append("&scope=").append(scope)
+            }
+        }
+        val body = bodyString.toRequestBody(null)
         val request = Request.Builder()
             .url(config.tokenEndpoint())
             .header("Authorization", "Basic $token")

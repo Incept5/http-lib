@@ -12,7 +12,8 @@ class ExampleBeanFactory {
     @Singleton
     @Startup
     fun createExampleGatewayWithAuth(config: ExampleHttpConfig): ExampleGatewayWithAuth {
-        val tokenFetcher = ClientCredentialsTokenFetcher(config)
+        val configAdapter = ExampleHttpConfigAdapter(config)
+        val tokenFetcher = ClientCredentialsTokenFetcher(configAdapter)
         return ExampleGatewayWithAuth(config.baseUrl(), tokenFetcher)
     }
 

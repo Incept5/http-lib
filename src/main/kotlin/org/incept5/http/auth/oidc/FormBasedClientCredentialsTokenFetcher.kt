@@ -18,11 +18,16 @@ class FormBasedClientCredentialsTokenFetcher(val config: ClientCredentialsConfig
     private val client = OkHttpClient.Builder().addInterceptor(RetryInterceptor()).build()
 
     override fun fetchNewToken(): TokenResponse {
-        val formBody = FormBody.Builder()
+        val formBodyBuilder = FormBody.Builder()
             .add("grant_type", "client_credentials")
             .add("client_id", config.clientId())
             .add("client_secret", config.clientSecret())
-            .build()
+        
+        config.scope()?.let { scope ->
+            formBodyBuilder.add("scope", scope)
+        }
+        
+        val formBody = formBodyBuilder.build()
         val request = Request.Builder()
             .url(config.tokenEndpoint())
             .header("Content-Type", "application/x-www-form-urlencoded")
