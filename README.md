@@ -128,36 +128,77 @@ If you need to set specific headers or handle a response in a special way you ca
 If you are hitting an API that is authenticated then most likely you will just need to provide
 an implementation of AuthTokenFetcher that is responsible for fetching a new token whenever needed.
 
-Here is an example implementation that supports the standard OIDC style Client Credentials grant:
+The library includes built-in support for OIDC Client Credentials grant through `ClientCredentialsTokenFetcher`:
 
-    class ClientCredentialsTokenFetcher (val config: ClientCredentialsConfig): AuthTokenFetcher {
+#### Basic Client Credentials Authentication
 
-        private val encoder = Base64.getEncoder()
-        private val client = OkHttpClient.Builder().addInterceptor(RetryInterceptor()).build()
-    
-        override fun fetchNewToken(): TokenResponse {
-            val token = encoder.encode("${config.clientId()}:${config.clientSecret()}".toByteArray()).toString(Charsets.UTF_8)
-            val body = "grant_type=client_credentials".toRequestBody(null)
-            val request = Request.Builder()
-                .url(config.tokenEndpoint())
-                .header("Authorization", "Basic $token")
-                .post(body)
-                .build()
-            client.newCall(request).execute().use { response ->
-                val bodyAsString = response.body?.string()
-                return Json.fromJson(bodyAsString!!)
-            }
-        }
+```kotlin
+// Create configuration
+val config = StdClientCredentialsConfig(
+    tokenEndpoint = "https://auth.example.com/oauth/token",
+    clientId = "your-client-id",
+    clientSecret = "your-client-secret"
+)
+
+// Create token fetcher
+val tokenFetcher = ClientCredentialsTokenFetcher(config)
+
+// Create gateway with authentication
+class ExampleGatewayWithAuth(
+    baseUri: String, 
+    tokenFetcher: AuthTokenFetcher
+) : HttpClient(baseUri, tokenFetcher = tokenFetcher) {
+
+    fun getSomethingById(id: UUID): ExamplePayload {
+        return super.get("/something/$id", null)
     }
+}
+```
 
-Then you can inject it into your gateway like this:
+#### Client Credentials with Scopes
 
-    class ExampleGatewayWithAuth (baseUri: String, tokenFetcher: AuthTokenFetcher) : HttpClient(baseUri, tokenFetcher = tokenFetcher) {
+You can specify OAuth scopes when requesting access tokens:
 
-        fun getSomethingById (id: UUID) : ExamplePayload {
-            return super.get("/something/$id", null)
-        }
+```kotlin
+val config = StdClientCredentialsConfig(
+    tokenEndpoint = "https://auth.example.com/oauth/token",
+    clientId = "your-client-id",
+    clientSecret = "your-client-secret",
+    scope = "payment:create payment:read webhook:read webhook:write"
+)
+
+val tokenFetcher = ClientCredentialsTokenFetcher(config)
+val gateway = ExampleGatewayWithAuth(baseUri, tokenFetcher)
+```
+
+#### Form-Based Client Credentials
+
+If your OAuth provider requires credentials in the request body instead of Basic authentication:
+
+```kotlin
+val config = StdClientCredentialsConfig(
+    tokenEndpoint = "https://auth.example.com/oauth/token",
+    clientId = "your-client-id",
+    clientSecret = "your-client-secret",
+    scope = "read write" // optional
+)
+
+val tokenFetcher = FormBasedClientCredentialsTokenFetcher(config)
+val gateway = ExampleGatewayWithAuth(baseUri, tokenFetcher)
+```
+
+#### Custom Authentication
+
+For custom authentication flows, implement the `AuthTokenFetcher` interface:
+
+```kotlin
+class CustomTokenFetcher : AuthTokenFetcher {
+    override fun fetchNewToken(): TokenResponse {
+        // Your custom token fetching logic
+        return TokenResponse(access_token = "your-token")
     }
+}
+```
 
 ### Error Handling
 
