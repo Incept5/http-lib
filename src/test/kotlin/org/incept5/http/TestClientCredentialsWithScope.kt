@@ -42,10 +42,14 @@ class TestClientCredentialsWithScope : ShouldSpec({
             val request = server.takeRequest()
             request.method shouldBe "POST"
             request.path shouldBe "/token"
+            request.getHeader("Content-Type") shouldContain "application/json"
             
             val body = request.body.readUtf8()
-            body shouldContain "grant_type=client_credentials"
-            body shouldContain "scope=payment:create payment:read webhook:read webhook:write"
+            val bodyMap = Json.fromJson<Map<String, String>>(body)
+            bodyMap["grant_type"] shouldBe "client_credentials"
+            bodyMap["client_id"] shouldBe "client_id"
+            bodyMap["client_secret"] shouldBe "client_secret"
+            bodyMap["scope"] shouldBe "payment:create payment:read webhook:read webhook:write"
 
             server.shutdown()
         }
@@ -75,9 +79,14 @@ class TestClientCredentialsWithScope : ShouldSpec({
             val request = server.takeRequest()
             request.method shouldBe "POST"
             request.path shouldBe "/token"
+            request.getHeader("Content-Type") shouldContain "application/json"
             
             val body = request.body.readUtf8()
-            body shouldBe "grant_type=client_credentials"
+            val bodyMap = Json.fromJson<Map<String, String>>(body)
+            bodyMap["grant_type"] shouldBe "client_credentials"
+            bodyMap["client_id"] shouldBe "client_id"
+            bodyMap["client_secret"] shouldBe "client_secret"
+            bodyMap.containsKey("scope") shouldBe false
 
             server.shutdown()
         }

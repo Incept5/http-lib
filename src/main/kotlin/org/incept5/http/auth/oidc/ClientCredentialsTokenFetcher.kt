@@ -4,34 +4,38 @@ import org.incept5.http.auth.AuthTokenFetcher
 import org.incept5.http.auth.TokenResponse
 import org.incept5.http.interceptors.RetryInterceptor
 import org.incept5.json.Json
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
-import java.util.*
 
 /**
  * Fetches a new token using the client credentials grant
- * and assumes the normal OIDC style token endpoint
+ * with JSON request body instead of form parameters
  */
 class ClientCredentialsTokenFetcher (val config: ClientCredentialsConfig): AuthTokenFetcher {
 
-    private val encoder = Base64.getEncoder()
     private val client = OkHttpClient.Builder().addInterceptor(RetryInterceptor()).build()
+    private val jsonMediaType = "application/json; charset=utf-8".toMediaType()
 
     override fun fetchNewToken(): TokenResponse {
-        val token = encoder.encode("${config.clientId()}:${config.clientSecret()}".toByteArray()).toString(Charsets.UTF_8)
-        val bodyString = buildString {
-            append("grant_type=client_credentials")
+        val requestPayload = buildMap {
+            put("grant_type", "client_credentials")
+            put("client_id", config.clientId())
+            put("client_secret", config.clientSecret())
             config.scope()?.let { scope ->
-                append("&scope=").append(scope)
+                put("scope", scope)
             }
         }
-        val body = bodyString.toRequestBody(null)
+        
+        val bodyJson = Json.toJson(requestPayload)
+        val body = bodyJson.toRequestBody(jsonMediaType)
+        
         val request = Request.Builder()
             .url(config.tokenEndpoint())
-            .header("Authorization", "Basic $token")
             .post(body)
             .build()
+            
         client.newCall(request).execute().use { response ->
             val bodyAsString = response.body?.string()
             return Json.fromJson(bodyAsString!!)
